@@ -7,16 +7,16 @@ WORKDIR /app
 # package.json과 package-lock.json 복사
 COPY package*.json ./
 
-# 의존성 설치
-RUN npm ci --only=production
+# 의존성 설치 (production 모드)
+RUN npm install --production
 
 # 애플리케이션 소스 복사
 COPY . .
 
-# 포트 노출 (CloudType이 자동으로 설정하지만 명시)
+# 포트 노출
 EXPOSE 5000
 
-# 환경 변수 설정 (CloudType에서 주입됨)
+# 환경 변수 설정
 ENV NODE_ENV=production
 
 # 애플리케이션 실행
