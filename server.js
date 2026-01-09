@@ -41,6 +41,13 @@ app.use((req, res, next) => {
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/todolist';
 
+// 디버그: 환경 변수 확인 (비밀번호는 마스킹)
+console.log('🔍 환경 변수 확인:');
+console.log(`   PORT: ${PORT}`);
+console.log(`   MONGODB_URI: ${MONGODB_URI ? MONGODB_URI.replace(/:\/\/([^:]+):([^@]+)@/, '://$1:****@') : '설정되지 않음'}`);
+console.log(`   NODE_ENV: ${process.env.NODE_ENV || '설정되지 않음'}`);
+console.log('');
+
 // MongoDB 연결
 mongoose.connect(MONGODB_URI)
   .then(() => {
