@@ -11,7 +11,12 @@ const app = express();
 // CORS 설정 - 모든 출처 허용
 // CORS 설정 - React 개발 서버 허용
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173'], // React 개발 서버 허용
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    'https://todolist-frontend-ten.vercel.app' // Vercel 배포 프론트엔드 허용
+  ],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: false, // credentials를 false로 설정 (origin: '*' 대신 특정 origin 사용)
