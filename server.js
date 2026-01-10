@@ -10,16 +10,34 @@ const app = express();
 // 미들웨어 설정
 // CORS 설정 - 모든 출처 허용
 // CORS 설정 - React 개발 서버 허용
+// CORS 설정 - 동적으로 origin 검증
 const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'http://127.0.0.1:5173',
-    'https://todolist-frontend-ten.vercel.app' // Vercel 배포 프론트엔드 허용
-  ],
+  origin: function (origin, callback) {
+    // 허용할 origin 패턴들
+    const allowedOrigins = [
+      /^http:\/\/localhost:\d+$/,           // localhost with any port
+      /^http:\/\/127\.0\.0\.1:\d+$/,        // 127.0.0.1 with any port
+      /^https:\/\/.*\.vercel\.app$/         // All Vercel domains (production & preview)
+    ];
+
+    // origin이 없는 경우 (예: 모바일 앱, Postman 등) 허용
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    // 허용된 패턴과 매칭되는지 확인
+    const isAllowed = allowedOrigins.some(pattern => pattern.test(origin));
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.log('❌ CORS 차단된 origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false, // credentials를 false로 설정 (origin: '*' 대신 특정 origin 사용)
+  credentials: false,
   optionsSuccessStatus: 200
 };
 
